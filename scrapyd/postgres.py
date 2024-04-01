@@ -135,7 +135,8 @@ class JsonPostgresPriorityQueue(object):
         q = "select id, message from %s" % self.table
         n = 0
         with self.conn.cursor() as cur:
-            for id, msg in cur.execute(q):
+            cur.execute(q)
+            for id, msg in cur.fetchall():
                 if func(self.decode(msg)):
                     q = f"delete from {self.table} where id=%s"
                     c = cur.execute(q, (id,))
