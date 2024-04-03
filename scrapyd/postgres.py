@@ -199,7 +199,7 @@ class PostgresFinishedJobs(object):
             if limit <= 0:
                 return  # nothing to delete
             w = "where id <= (select max(id) from " \
-                "(select id from %s order by end_time limit %d))" % (self.table, limit)
+                "(select id from %s order by end_time limit %d) as t1)" % (self.table, limit)
         q = "delete from %s %s" % (self.table, w)
         with self.conn.cursor() as cur:
             cur.execute(q)
